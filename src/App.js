@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './components/Home/Home';
+import { Game } from './components/Game/Game';
 import './App.css';
 
 function App() {
@@ -7,8 +9,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<xx />} />
-        <Route path="/x" element={<xx />} /> */}
+          <Route path="/" element={<Home />} />
+          <Route path="/game" element={<Game />} />
         </Routes>
       </BrowserRouter>
     </div>
