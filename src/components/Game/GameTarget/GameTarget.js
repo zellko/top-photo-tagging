@@ -1,8 +1,20 @@
 import React from 'react';
 import './GameTarget.css';
 
-function GameTarget({ position, onGameTargetButtonClick }) {
+function GameTarget({ position, onGameTargetButtonClick, charactersFound }) {
   // console.log(position);
+
+  const [isWaldoFound, isOdlawFound] = charactersFound;
+  const targetBtn = document.querySelectorAll('button');
+
+  if (isWaldoFound) {
+    if (targetBtn) targetBtn[0].classList.add('found');
+  }
+
+  if (isOdlawFound) {
+    if (targetBtn) targetBtn[1].classList.add('found');
+  }
+
   return (
     <div
       className="game-target"
