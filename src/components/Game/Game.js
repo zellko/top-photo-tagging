@@ -1,47 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import GameTarget from './GameTarget/GameTarget';
+import { useNavigate, Link } from 'react-router-dom';
 import { getTargetPosition } from '../../firebase/firebase';
-// import useCharFound from './useCharFound/useCharFound';
-
-function transformDbData(dbData) {
-  // This function convert ladder data's to an array...
-  const dbDataObject = dbData[0];
-  const dbDataArray = [];
-
-  for (const key in dbDataObject) {
-    if (Object.hasOwnProperty.call(dbDataObject, key)) {
-      dbDataArray.push([key, dbDataObject[key]]);
-    }
-  }
-
-  // ...And sort the array
-  dbDataArray.sort((a, b) => a[1] - b[1]);
-
-  return dbDataArray;
-}
+import GameHeader from './GameHeader/GameHeader';
+import GameTarget from './GameTarget/GameTarget';
+import useCharFound from './useCharFound/useCharFound';
 
 function Game() {
   const [charPosition, setCharPosition] = useState({});
   const [showTarget, setShowTarget] = useState([false, [0, 0]]);
-  // const { charFound, checkClickPosition } = useCharFound();
+  const [timer, setTimer] = useState(0);
+  const { charFound, checkClickPosition } = useCharFound();
+  const navigate = useNavigate();
+
+  function increaseTimer() {
+    const previousValue = timer;
+    setTimer(previousValue + 1);
+  }
 
   useEffect(() => {
     let ignore = false;
 
     async function fetchData() {
-      // Todo Add Try / Catch
       const targetData = await getTargetPosition();
-      // console.log(targetData);
       if (!ignore) setCharPosition(targetData);
     }
 
     fetchData();
 
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+    };
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(increaseTimer, 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  useEffect(() => {
+    // When user found all characters...
+    if (charFound[0] === true && charFound[1] === true) {
+      navigate('/gameend', { state: timer });
+    }
+  }, [charFound]);
+
   const setTargetPosition = (e) => {
-    // console.log(`${e.nativeEvent.layerX} / ${e.nativeEvent.layerY}`);
     const positionX = e.nativeEvent.layerX;
     const positionY = e.nativeEvent.layerY;
     setShowTarget([true, [positionX, positionY]]);
@@ -49,7 +52,7 @@ function Game() {
 
   const isTargetPosition = () => {
     // console.log(charPosition);
-    if (charPosition[0] === undefined || charPosition === 'error') {
+    if (charPosition === undefined || charPosition === 'error') {
       return (
         <p>Error loading game data, please reload the page</p>
       );
@@ -73,7 +76,11 @@ function Game() {
   const isShowGameTarget = () => {
     if (showTarget[0] === true) {
       return (
-        <GameTarget position={showTarget[1]} />
+        <GameTarget
+          position={showTarget[1]}
+          onGameTargetButtonClick={(e) => { checkClickPosition(showTarget[1], charPosition, e); }}
+          charactersFound={charFound}
+        />
       );
     }
 
@@ -82,7 +89,7 @@ function Game() {
 
   return (
     <div className="game">
-      Game
+      <GameHeader charactersFound={charFound} />
       <div
         className="game-area"
         style={
@@ -98,8 +105,8 @@ function Game() {
           style={
           {
             position: 'absolute',
-            left: '250px',
-            top: '300px',
+            left: '150px',
+            top: '250px',
             width: '6px',
             aspectRatio: 1,
             border: '3px solid red',
@@ -112,8 +119,8 @@ function Game() {
           style={
           {
             position: 'absolute',
-            left: '50px',
-            top: '75px',
+            left: '15px',
+            top: '15px',
             width: '6px',
             aspectRatio: 1,
             border: '3px solid red',
@@ -122,9 +129,10 @@ function Game() {
         }
         />
       </div>
-
+      <p>{timer}</p>
+      <Link to="/">home</Link>
     </div>
   );
 }
 
-export { Game, transformDbData };
+export default Game;
