@@ -1,0 +1,20 @@
+.game-header{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4%;
+    padding: 3% 5%;
+}
+
+.game-header > *:nth-child(2){
+    margin-left: auto;
+}
+
+.game-header img{
+    width: 54px;
+    height: 62px;
+}
+
+.game-area img{
+    height: 600px;
+}
