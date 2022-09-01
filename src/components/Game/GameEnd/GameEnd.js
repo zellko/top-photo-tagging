@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getLadder, addPlayerToLadder, updatePlayerLadder } from '../../../firebase/firebase';
+import './GameEnd.css';
 
 function transformDbData(dbData) {
   // This function convert ladder data's to an array...
@@ -50,7 +51,7 @@ function GameEnd() {
   const timer = params.state;
   const sesionKey = params.key;
   const [ladder, setLadder] = useState([]);
-  const [playerLadderPosition, setplayerLadderPosition] = useState(0);
+  const [playerLadderPosition, setplayerLadderPosition] = useState(undefined);
   const [inputPlaceHolder, setInputPlaceHolder] = useState('Anonymous Player');
 
   useEffect(() => {
@@ -74,13 +75,16 @@ function GameEnd() {
       const playerPosition = checkPlayerLadderPosition(timer, sortedLadder);
 
       if (!ignore && (sortedLadder.length > 0)) {
-        setLadder(sortedLadder);
-        setplayerLadderPosition(playerPosition);
-      }
-    }
+        if (timer > 0) {
+          // Add player data's to ladder hook
+          sortedLadder.splice(playerPosition - 1, 0, ['AnonPlayer', timer, sesionKey]);
 
-    if (timer > 0) {
-      pushPlayerTimeToLadder();
+          setplayerLadderPosition(playerPosition);
+          pushPlayerTimeToLadder();
+        }
+
+        setLadder(sortedLadder);
+      }
     }
 
     fetchLadder();
@@ -108,47 +112,71 @@ function GameEnd() {
     setInputPlaceHolder(playerName);
   };
 
+  const showGameResult = () => {
+    if (timer > 0) {
+      return (
+        <div className="game-result">
+          <p>Congratulation! You found them all!</p>
+          <p className="game-result-score">
+            Your time:
+            {' '}
+            {convertTime(timer)}
+          </p>
+          <div className="game-result-input">
+            <label htmlFor="playername">Enter your name:</label>
+            <input type="text" id="playername" name="playername" placeholder={inputPlaceHolder} />
+            <button type="button" onClick={updateScore}>Save Score</button>
+          </div>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="game-end">
-      <p>
-        timer:
-        {' '}
-        {timer}
-      </p>
-      <div className="game-result">
-        <p>Congratulation! You found them all!</p>
-        <p className="game-result-score">
-          Your time:
-          {' '}
-          {convertTime(timer)}
-        </p>
-        <div className="game-result-input">
-          <label htmlFor="playername">Enter your name:</label>
-          <input type="text" id="playername" name="playername" placeholder={inputPlaceHolder} />
-          <button type="button" onClick={updateScore}>Save Score</button>
-        </div>
-      </div>
+      {showGameResult()}
+
       <div className="game-ladder">
+        <h2>LeaderBoard</h2>
         {ladder.map((element, index) => {
           if (index > 9) return;
 
           if (index > 8 && playerLadderPosition > 8) {
             return (
-              <div className="ladder-row" key={15645987}>
-                <p>
-                  {playerLadderPosition}
-                  .
-                </p>
-                <p>
-                  AnonPlayer
-                </p>
-                <p>
-                  {convertTime(timer)}
-                </p>
+              <div className="ladder-row-out" key={15645987}>
+                <div className="splitter" />
+                <div className="ladder-row-out-result">
+                  <p>
+                    {playerLadderPosition}
+                    .
+                  </p>
+                  <p>
+                    {ladder[playerLadderPosition - 1][0]}
+                  </p>
+                  <p>
+                    {convertTime(timer)}
+                  </p>
+                </div>
               </div>
             );
           }
 
+          if (index === playerLadderPosition - 1) {
+            return (
+              <div className="ladder-row player-position" key={element[2]}>
+                <p>
+                  {index + 1}
+                  .
+                </p>
+                <p>
+                  {element[0]}
+                </p>
+                <p>
+                  {convertTime(element[1])}
+                </p>
+              </div>
+            );
+          }
           return (
             <div className="ladder-row" key={element[2]}>
               <p>

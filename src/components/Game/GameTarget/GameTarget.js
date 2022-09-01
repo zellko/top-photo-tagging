@@ -2,8 +2,6 @@ import React from 'react';
 import './GameTarget.css';
 
 function GameTarget({ position, onGameTargetButtonClick, charactersFound }) {
-  // console.log(position);
-
   const [isWaldoFound, isOdlawFound] = charactersFound;
   const targetBtn = document.querySelectorAll('button');
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import waldoImg from '../../../img/waldo_portrait.png';
 import odlawImg from '../../../img/odlaw_portrait.png';
+import './GameHeader.css';
 
 function GameHeader(props) {
   const [isWaldoFound, isOdlawFound] = props.charactersFound;
@@ -17,24 +18,16 @@ function GameHeader(props) {
 
   return (
     <div className="game-header">
-      <h1>Where is Waldo ?</h1>
+      <h1>Where are Waldo & Odlaw ?</h1>
       <img
         className="waldo-portrait"
         src={waldoImg}
         alt="Waldo portrait"
-        style={{
-          width: '72px',
-          height: '82px',
-        }}
       />
       <img
         className="odlaw-portrait"
         src={odlawImg}
         alt="Odlaw portrait"
-        style={{
-          width: '72px',
-          height: '82px',
-        }}
       />
     </div>
   );

@@ -47,11 +47,11 @@ function Game() {
   const setTargetPosition = (e) => {
     const positionX = e.nativeEvent.layerX;
     const positionY = e.nativeEvent.layerY;
+
     setShowTarget([true, [positionX, positionY]]);
   };
 
   const isTargetPosition = () => {
-    // console.log(charPosition);
     if (charPosition === undefined || charPosition === 'error') {
       return (
         <p>Error loading game data, please reload the page</p>
@@ -62,11 +62,6 @@ function Game() {
       <img
         onClick={setTargetPosition}
         className="game-image"
-        style={
-        {
-          width: '100%',
-        }
-        }
         src="https://3hwuuuxcz5o651g144s0kw10-wpengine.netdna-ssl.com/wp-content/uploads/2016/07/G3M_Wheres_Waldo.jpg"
         alt="where is waldo"
       />
@@ -100,37 +95,7 @@ function Game() {
       >
         {isTargetPosition()}
         {isShowGameTarget()}
-        <div
-          className="TEST-ONLY-FAKEPOSITION"
-          style={
-          {
-            position: 'absolute',
-            left: '150px',
-            top: '250px',
-            width: '6px',
-            aspectRatio: 1,
-            border: '3px solid red',
-            animation: 'glow-test 5s ease-in-out 0s infinite',
-          }
-        }
-        />
-        <div
-          className="TEST-ONLY-FAKEPOSITION"
-          style={
-          {
-            position: 'absolute',
-            left: '15px',
-            top: '15px',
-            width: '6px',
-            aspectRatio: 1,
-            border: '3px solid red',
-            animation: 'glow-test 5s ease-in-out 0s infinite',
-          }
-        }
-        />
       </div>
-      <p>{timer}</p>
-      <Link to="/">home</Link>
     </div>
   );
 }
