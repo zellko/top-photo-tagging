@@ -1,35 +1,27 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import {
-  render, screen, waitFor, act,
+  render, screen, waitFor,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { Game, transformDbData } from './Game';
+import Game from './Game';
 
 const mockFirebaseModule = require('../../firebase/firebase');
 
 // Mock the DB datas
-const mockLadderDbData = [{ mockUser1: 60, mockUser2: 55 }];
-const mockLadderDbData2 = [{ mockUser1: 60, mockUser2: 55, mockUser3: 70 }];
 const mockTargetDbData = [{ odlaw: [250, 300], waldo: [50, 75] }];
 
 describe('Game component tests', () => {
-  it('transformDbData: Sould return an sorted array', () => {
-    let sortedDbData = transformDbData(mockLadderDbData);
-    expect(sortedDbData).toMatchObject([['mockUser2', 55], ['mockUser1', 60]]);
-
-    sortedDbData = transformDbData(mockLadderDbData2);
-    expect(sortedDbData).toMatchObject([
-      ['mockUser2', 55],
-      ['mockUser1', 60],
-      ['mockUser3', 70]]);
-  });
-
   it('Fetch TargetPosition: Game image render if data are OK', async () => {
     // Mock the DB Call
     jest.spyOn(mockFirebaseModule, 'getTargetPosition').mockReturnValue(mockTargetDbData);
 
-    const { container } = render(<Game />);
+    const { container } = render(
+      <BrowserRouter>
+        <Game />
+      </BrowserRouter>,
+    );
 
     // await waitFor(() => container.querySelector('.game-image'));
     await waitFor(() => screen.getByAltText('where is waldo'));
@@ -42,7 +34,11 @@ describe('Game component tests', () => {
     // Mock the DB Call
     jest.spyOn(mockFirebaseModule, 'getTargetPosition').mockReturnValue('error');
 
-    const { container } = render(<Game />);
+    const { container } = render(
+      <BrowserRouter>
+        <Game />
+      </BrowserRouter>,
+    );
 
     // await waitFor(() => container.querySelector('.game-image'));
     await waitFor(() => screen.getByText('Error loading game data, please reload the page'));
@@ -55,9 +51,12 @@ describe('Game component tests', () => {
     // Mock the DB Call
     jest.spyOn(mockFirebaseModule, 'getTargetPosition').mockReturnValue(mockTargetDbData);
 
-    const { container } = render(<Game />);
+    const { container } = render(
+      <BrowserRouter>
+        <Game />
+      </BrowserRouter>,
+    );
 
-    // await waitFor(() => container.querySelector('.game-image'));
     await waitFor(() => screen.getByAltText('where is waldo'));
     const gameImage = screen.getByAltText('where is waldo');
 
