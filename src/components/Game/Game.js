@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getTargetPosition } from '../../firebase/firebase';
 import GameHeader from './GameHeader/GameHeader';
 import GameTarget from './GameTarget/GameTarget';
 import useCharFound from './useCharFound/useCharFound';
+import gameImg from '../../img/G3M_Wheres_Waldo.jpg';
+import './Game.css';
 
 function Game() {
   const [charPosition, setCharPosition] = useState({});
@@ -22,6 +24,12 @@ function Game() {
 
     async function fetchData() {
       const targetData = await getTargetPosition();
+
+      if (targetData === 'error') {
+        setCharPosition('error');
+        return;
+      }
+
       if (!ignore) setCharPosition(targetData);
     }
 
@@ -52,7 +60,7 @@ function Game() {
   };
 
   const isTargetPosition = () => {
-    if (charPosition === undefined || charPosition === 'error') {
+    if (charPosition === undefined || charPosition === 'error' || charPosition.length === 0) {
       return (
         <p>Error loading game data, please reload the page</p>
       );
@@ -62,7 +70,7 @@ function Game() {
       <img
         onClick={setTargetPosition}
         className="game-image"
-        src="https://3hwuuuxcz5o651g144s0kw10-wpengine.netdna-ssl.com/wp-content/uploads/2016/07/G3M_Wheres_Waldo.jpg"
+        src={gameImg}
         alt="where is waldo"
       />
     );
