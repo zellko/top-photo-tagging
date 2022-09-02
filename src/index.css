@@ -34,6 +34,22 @@ code {
   --player-ladder-row-color: #272729;
 }
 
+a{
+  text-decoration: none;
+}
+
+button{
+  text-align: center;
+  font-weight: 700;
+  border: 3px solid var(--ladder-row-color);
+  padding: 4px 12px;
+  width: max-content;  
+}
+
+button:not(.found){
+  background-color: var(--card-color);
+}
+
 button:not(.found):hover{
   cursor: pointer;
 }

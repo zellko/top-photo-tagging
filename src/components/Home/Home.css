@@ -1,0 +1,32 @@
+.home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    width: 80%;
+    height: max-content;
+    padding: 16px;
+    margin-top: 3%;
+    background-color: var(--card-color);
+    border: 1px solid var(--ladder-row-color);
+}
+
+.home-img img{
+    width: 54px;
+    height: 62px;
+}
+
+.home h3{
+    color: var(--text-hl-color);
+    font-style: italic;
+}
+
+.home button{
+    margin-top: 16px;
+}
+
+.home button:hover{
+    background-color: var(--bg-color);
+}

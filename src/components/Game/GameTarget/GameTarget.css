@@ -22,27 +22,8 @@
     gap: 4px;
 }
 
-.gameTargetButton button{
-    text-align: center;
-    font-weight: 700;
-    background-color: var(--card-color);
-    border: 2px solid var(--ladder-row-color);
-    padding: 4px 12px;
-}
-
-.gameTargetButton button:not(.found):hover{
-    background-color: var(--bg-color);
-}
-
-.gameTargetButton .found{
-    color: var(--bg-color);
-    border: 1px solid green;
-    /* filter: grayscale(100%) brightness(80%) sepia(300%) hue-rotate(50deg) saturate(500%); */
-    background-color: lightgreen;
-} 
-
 .found{
-    border: 1px solid green;
     /* filter: grayscale(100%) brightness(80%) sepia(300%) hue-rotate(50deg) saturate(500%); */
     background-color: lightgreen;
+    color: var(--bg-color);
 } 

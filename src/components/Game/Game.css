@@ -1,0 +1,9 @@
+.game{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-area p{
+    color: rgba(255, 92, 92, 0.8);
+}

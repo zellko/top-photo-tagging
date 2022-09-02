@@ -1,7 +1,6 @@
 .game-header{
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 4%;
     padding: 3% 5%;
 }
