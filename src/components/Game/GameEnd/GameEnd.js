@@ -132,10 +132,17 @@ function GameEnd() {
     }
   };
 
+  const showError = () => {
+    if (ladder === undefined || ladder === 'error') {
+      return (
+        <p>Error loading game data, please reload the page</p>
+      );
+    }
+  };
+
   return (
     <div className="game-end">
       {showGameResult()}
-
       <div className="game-ladder">
         <h2>LeaderBoard</h2>
         {ladder.map((element, index) => {
@@ -192,6 +199,7 @@ function GameEnd() {
             </div>
           );
         })}
+        {showError()}
       </div>
     </div>
   );
